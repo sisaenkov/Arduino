@@ -124,6 +124,7 @@ void putV(String varType) {
   } else if ( varType == "cold" ) {
     cold = varInt;
   }
+//  Serial.print("putV: ");
 //  Serial.println(varInt);
 //  Serial.println(hot);
 //  Serial.println(cold);
@@ -148,14 +149,23 @@ void getV (String varType) {
   sprintf(select, "GET /cgi-bin/count.pl?type=%s HTTP/1.0", varType.c_str());
   url = 1;
   sendHTTPRequest();
-  if ( varInt < match ) {    // если значение в базе больше, чем на карте
+  if ( varInt != match ) {   // если значение в базе отличается от значения на карте,
     varInt = match;          // сделать значение на карте равным значению из базы
+    if ( varType == "hot" ) {
+      putV("hot");           // и записать его на карту
+    } else if ( varType == "cold" ) {
+      putV("cold");          // и записать его на карту
+    }
   }
   if ( varType == "hot" ) {
     hot = varInt;
   } else if ( varType == "cold" ) {
     cold = varInt;
   }
+//  Serial.print("getV: ");
+//  Serial.println(varInt);
+//  Serial.println(hot);
+//  Serial.println(cold);
 }
 
 // Функция поиска показаний на странице ответа сервера
